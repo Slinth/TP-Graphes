@@ -2,59 +2,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Main{
-	static int INFINI = 99999;
-
-	public static int[] bellmanFord(Graphe G, int source) {
-		int n = G.nbSommets;
-		int distance[] = new int[n];
-
-		// Initalisation de toutes les distances a INT_MAX (+ INF) sauf source (= 0)
-		for (int i = 0; i < n; i++) {
-			distance[i] = INFINI;
-		}
-		distance[source] = 0;
-		System.out.println("Initialisation distances : " + Arrays.toString(distance));
-
-		// Determination des distances minimales
-		for (int i = 1; i < n; i++) {
-			for (Sommet s : G.data) {
-				for (Arc a : s.voisins) {
-					int u = a.sommetSource.valeur;
-					int v = a.sommetDestination.valeur;
-					int p = a.poids;
-					distance[v] = Math.min(distance[v], p + distance[u]);
-				}
-			}
-		}
-		
-
-		// Test presence circuit absorbant
-		for (Sommet s : G.data) {
-			for (Arc a : s.voisins) {
-				int u = a.sommetSource.valeur;
-				int v = a.sommetDestination.valeur;
-				int p = a.poids;
-
-				if (distance[u] + p < distance[v]) {
-					System.err.println("PRESENCE D'UN CIRCUIT ABSORBANT");
-					throw new RuntimeException("Presence d'un circuit absorbant");
-				}
-			}			
-		}
-
-		return distance;
-	}
-
-	public static void afficherGraphe(Graphe G) {
-		for (Sommet s : G.data) {
-			System.out.print(s.valeur + " | ");
-			for (Arc a : s.voisins) {
-				System.out.print(a.toString() + " ");
-			}
-			System.out.println();
-		}
-	}
-
 	public static void main(String[] args) {
 		Sommet s0 = new Sommet(0);
 		Sommet s1 = new Sommet(1);
@@ -81,9 +28,11 @@ public class Main{
 
 		Graphe g = new Graphe(5, 9, list);
 
-		afficherGraphe(g);
+		g.afficherGraphe();
 
-		int[] res = bellmanFord(g, 0);
-		System.out.println(Arrays.toString(res));
+		int[] res = g.bellmanFord(0);
+		System.out.println("BELLMANFORD : " + Arrays.toString(res));
+
+		System.out.println("DJIKSTRA : " + Arrays.toString(g.dijkstra(s0)));
 	}
 }
