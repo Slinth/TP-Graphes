@@ -30,7 +30,6 @@ class Graphe{
 			int indSommetSource = (int)(Math.random() * this.nbSommets );
 			int indSommetDestination = (int)(Math.random() * this.nbSommets );
 			int poids = poidsMin + (int)(Math.random() * ((poidsMax - poidsMin) + 1));;
-			System.out.println("Arc entre " + indSommetSource + " et " + indSommetDestination + " de poids " + poids );
 			if(indSommetDestination != indSommetSource){
 				
 				Sommet sSource = data.get(indSommetSource);
@@ -41,5 +40,41 @@ class Graphe{
 				cptArcs ++ ;
 			}
 		}
+	}
+
+
+	public int[] dijkstra(Sommet s){
+		int d[] = int[n];
+		int inf = 99999;
+		ArrayList<Sommet> m = new ArrayList();
+
+		for(int i = 1 ; i < this.nbSommets ; i++) d[i] = inf;
+
+		d[s.valeur] = 0;
+		m.add(s);
+
+		while(m.size() != this.nbSommets){
+			//Sommet appartenant pas a m ayant d(x) minimale
+			Sommet sMin = null;
+			for ( Sommet s : this.data ) {
+				if(!m.contains(s)){
+					if(sMin == null)sMin = s;
+					else if(d[sMin.valeur] > d[s.valeur])sMin = s;
+				}
+			}
+
+			m.add(sMin);
+
+			for (Sommet s : this.data) {
+				for (Arc a : s.voisins) {
+					int x = a.sommetSource.valeur;
+					int y = a.sommetDestination.valeur;
+					int p = a.poids;
+					d[y] = Math.min(d[y], p + d[x]);
+				}		
+			}
+		}
+
+		return d;	
 	}
 }
