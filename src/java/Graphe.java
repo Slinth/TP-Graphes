@@ -13,6 +13,10 @@ class Graphe{
 		this.nbArcs = _nbArcs;
 	}
 
+	public Graphe(ArrayList<Sommet> sommets) {
+		this.data = sommets;
+	}
+
 	public void init(){
 		for(int i = 0 ; i < nbSommets ; i++){
 			data.add(new Sommet(i));
