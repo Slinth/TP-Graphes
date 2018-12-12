@@ -8,4 +8,8 @@ class Arc{
 		this.sommetDestination = _sommetDestination;
 		this.poids = _poids;
 	}
+
+	public String toString() {
+		return "[ " + sommetSource + ", " + sommetDestination + " | " + poids + " ]";
+	}
 }

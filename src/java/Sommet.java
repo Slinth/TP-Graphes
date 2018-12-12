@@ -12,4 +12,8 @@ class Sommet{
 		this.voisins.add(new Arc(this,s,poids));
 	}
 
+	public String toString() {
+		return "" + valeur;
+	}
+
 }

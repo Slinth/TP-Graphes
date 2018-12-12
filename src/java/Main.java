@@ -13,18 +13,21 @@ public class Main{
 			distance[i] = INFINI;
 		}
 		distance[source] = 0;
+		System.out.println("Initialisation distances : " + Arrays.toString(distance));
 
 		// Determination des distances minimales
-		for (Sommet s : G.data) {
-			int som = s.valeur;
-			for (Arc a : s.voisins) {
-				int u = a.sommetSource.valeur;
-				int v = a.sommetDestination.valeur;
-				int p = a.poids;
-				distance[som] = Math.min(distance[v], p + distance[u]);
+		for (int i = 1; i < n; i++) {
+			for (Sommet s : G.data) {
+				int som = s.valeur;
+				for (Arc a : s.voisins) {
+					int u = a.sommetSource.valeur;
+					int v = a.sommetDestination.valeur;
+					int p = a.poids;
+					distance[som] = Math.min(distance[v], p + distance[u]);
+				}
 			}
 		}
-
+		
 
 		// Test presence circuit absorbant
 		for (Sommet s : G.data) {
@@ -43,6 +46,16 @@ public class Main{
 		return distance;
 	}
 
+	public static void afficherGraphe(Graphe G) {
+		for (Sommet s : G.data) {
+			System.out.print(s.valeur + " | ");
+			for (Arc a : s.voisins) {
+				System.out.print(a.toString() + " ");
+			}
+			System.out.println();
+		}
+	}
+
 	public static void main(String[] args) {
 		Sommet s0 = new Sommet(0);
 		Sommet s1 = new Sommet(1);
@@ -55,8 +68,7 @@ public class Main{
 		s1.addVoisin(s2, 8);
 		s1.addVoisin(s4, -4);
 		s1.addVoisin(s3, 5);
-		s3.addVoisin(s1, -2);
-		s2.addVoisin(s3, -3);
+		s3.addVoisin(s2, -2);
 		s2.addVoisin(s4, 9);
 		s4.addVoisin(s0, 2);
 		s4.addVoisin(s3, 7);
@@ -68,7 +80,9 @@ public class Main{
 		list.add(s3);
 		list.add(s4);
 
-		Graphe g = new Graphe(5, 10, list);
+		Graphe g = new Graphe(5, 9, list);
+
+		afficherGraphe(g);
 
 		int[] res = bellmanFord(g, 0);
 		System.out.println(Arrays.toString(res));
