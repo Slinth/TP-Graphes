@@ -18,12 +18,11 @@ public class Main{
 		// Determination des distances minimales
 		for (int i = 1; i < n; i++) {
 			for (Sommet s : G.data) {
-				int som = s.valeur;
 				for (Arc a : s.voisins) {
 					int u = a.sommetSource.valeur;
 					int v = a.sommetDestination.valeur;
 					int p = a.poids;
-					distance[som] = Math.min(distance[v], p + distance[u]);
+					distance[v] = Math.min(distance[v], p + distance[u]);
 				}
 			}
 		}
@@ -37,8 +36,8 @@ public class Main{
 				int p = a.poids;
 
 				if (distance[u] + p < distance[v]) {
-					//throw new RuntimeException("Presence d'un circuit absorbant");
 					System.err.println("PRESENCE D'UN CIRCUIT ABSORBANT");
+					throw new RuntimeException("Presence d'un circuit absorbant");
 				}
 			}			
 		}
