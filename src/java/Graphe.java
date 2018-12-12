@@ -13,7 +13,9 @@ class Graphe{
 		this.nbArcs = _nbArcs;
 	}
 
-	public Graphe(ArrayList<Sommet> sommets) {
+	public Graphe(int _nbSommets, int _nbArcs, ArrayList<Sommet> sommets) {
+		this.nbSommets = _nbSommets;
+		this.nbArcs = _nbArcs;
 		this.data = sommets;
 	}
 
