@@ -38,7 +38,7 @@ public class Main{
 
 				if (distance[u] + p < distance[v]) {
 					//throw new RuntimeException("Presence d'un circuit absorbant");
-					System.out.println("PRESENCE D'UN CIRCUIT ABSORBANT");
+					System.err.println("PRESENCE D'UN CIRCUIT ABSORBANT");
 				}
 			}			
 		}
