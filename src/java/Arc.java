@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 class Arc{
 	public Sommet sommetSource;
 	public Sommet sommetDestination;
