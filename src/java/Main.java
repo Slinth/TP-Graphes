@@ -26,7 +26,7 @@ public class Main{
 		list.add(s3);
 		list.add(s4);
 
-		Graphe g = new Graphe(5, 9, list);
+		Graphe g = new Graphe(5, 9, list,0,1000);
 
 		g.afficherGraphe();
 

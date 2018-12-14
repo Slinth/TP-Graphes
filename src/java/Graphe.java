@@ -6,16 +6,16 @@ class Graphe{
 	public ArrayList<Sommet> data = new ArrayList();
 	public int nbSommets;
 	public int nbArcs;
-	public static int poidsMax = 100;
-	public static int poidsMin = 1;
+	public int poidsMax;
+	public int poidsMin;
 	public static int INFINI = 99999;
 
-	public Graphe(int _nbSommets, int _nbArcs){
+	public Graphe(int _nbSommets, int _nbArcs,int poidsMin,int poidsMax){
 		this.nbSommets = _nbSommets;
 		this.nbArcs = _nbArcs;
 	}
 
-	public Graphe(int _nbSommets, int _nbArcs, ArrayList<Sommet> sommets) {
+	public Graphe(int _nbSommets, int _nbArcs, ArrayList<Sommet> sommets,int poidsMin,int poidsMax) {
 		this.nbSommets = _nbSommets;
 		this.nbArcs = _nbArcs;
 		this.data = sommets;
