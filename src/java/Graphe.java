@@ -63,7 +63,7 @@ class Graphe{
 			distance[i] = INFINI;
 		}
 		distance[source] = 0;
-		System.out.println("Initialisation distances : " + Arrays.toString(distance));
+		//System.out.println("Initialisation distances : " + Arrays.toString(distance));
 
 		// Determination des distances minimales
 		for (int i = 1; i < n; i++) {
@@ -95,9 +95,50 @@ class Graphe{
 		return distance;
 	}
 
+	public static int[] bellmanFord(Graphe g,int source) {
+		int n = g.nbSommets;
+		int distance[] = new int[n];
+
+		// Initalisation de toutes les distances a INT_MAX (+ INF) sauf source (= 0)
+		for (int i = 0; i < n; i++) {
+			distance[i] = INFINI;
+		}
+		distance[source] = 0;
+		//System.out.println("Initialisation distances : " + Arrays.toString(distance));
+
+		// Determination des distances minimales
+		for (int i = 1; i < n; i++) {
+			for (Sommet s : g.data) {
+				for (Arc a : s.voisins) {
+					int u = a.sommetSource.valeur;
+					int v = a.sommetDestination.valeur;
+					int p = a.poids;
+					distance[v] = Math.min(distance[v], p + distance[u]);
+				}
+			}
+		}
+		
+
+		// Test presence circuit absorbant
+		for (Sommet s : g.data) {
+			for (Arc a : s.voisins) {
+				int u = a.sommetSource.valeur;
+				int v = a.sommetDestination.valeur;
+				int p = a.poids;
+
+				if (distance[u] + p < distance[v]) {
+					System.err.println("PRESENCE D'UN CIRCUIT ABSORBANT");
+					throw new RuntimeException("Presence d'un circuit absorbant");
+				}
+			}			
+		}
+
+		return distance;
+	}
+
 
 	public int[] dijkstra(Sommet s){
-		int n = this.nbSommets;
+		int n = this.data.size();
 		int d[] = new int[n];
 		ArrayList<Sommet> m = new ArrayList();
 
@@ -132,7 +173,7 @@ class Graphe{
 	}
 
 	public int[] dijkstra(Sommet s,int[][] couts){
-		int n = this.nbSommets;
+		int n = this.data.size();
 		int d[] = new int[n];
 		ArrayList<Sommet> m = new ArrayList();
 
@@ -183,8 +224,11 @@ class Graphe{
 	 */
 	public int[][] johnson(){
 		int[][] c = this.getTabCouts();
-		int[][] distance = new int[this.nbSommets][this.nbSommets];
-		Sommet q = new Sommet(this.nbSommets+1);
+
+		int[][] distance = new int[this.nbSommets+1][this.nbSommets+1];
+
+		Sommet q = new Sommet(this.nbSommets);
+
 		for ( Sommet s :this.data ) {
 			q.addVoisin(s,0);
 		}
@@ -192,11 +236,11 @@ class Graphe{
 		ArrayList<Sommet> data2 = this.data;
 		data2.add(q);
 
-		Graphe G2 = new Graphe(this.nbSommets,this.nbArcs,data2,this.poidsMin,this.poidsMax);
+		Graphe g2 = new Graphe(data2.size(),this.nbArcs+this.nbSommets,data2,this.poidsMin,this.poidsMax);
 
-		int[] h = G2.bellmanFord(q.valeur);
+		int[] h = bellmanFord(g2,q.valeur-1);
 
-		int[][] c2 = new int[this.nbSommets][this.nbSommets];
+		int[][] c2 = new int[this.nbSommets+1][this.nbSommets+1];
 
 		for (int i = 0 ; i < this.nbSommets ; i++ ) {
 			for(int j = 0 ; j <this.nbSommets ; j++ ){
@@ -205,7 +249,7 @@ class Graphe{
 		}
 
 		for (Sommet som : this.data ) {
-			int[] d = dijkstra(som,c2);
+			int[] d = this.dijkstra(som,c2);
 			for ( Sommet sommet : this.data) {
 				distance[som.valeur][sommet.valeur] = d[sommet.valeur] + h[sommet.valeur] - h[som.valeur];
 			}

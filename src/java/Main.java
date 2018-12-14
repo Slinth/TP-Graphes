@@ -34,5 +34,14 @@ public class Main{
 		System.out.println("BELLMANFORD : " + Arrays.toString(res));
 
 		System.out.println("DJIKSTRA : " + Arrays.toString(g.dijkstra(s0)));
+		
+		System.out.println("JOHNSON : ");
+		int[][] distance = g.johnson();
+		for(int i = 0 ; i < g.nbSommets ; i++){
+			for(int j = 0 ; j < g.nbSommets ; j++){
+				System.out.print(distance[i][j] + " | ");
+			}
+			System.out.println();
+		}
 	}
 }
