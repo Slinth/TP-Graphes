@@ -103,52 +103,10 @@ class Graphe{
 		return distance;
 	}
 
-	public static int[] bellmanFord(Graphe g,int source) {
-		int n = g.nbSommets;
-		int distance[] = new int[n];
-
-		// Initalisation de toutes les distances a INT_MAX (+ INF) sauf source (= 0)
-		for (int i = 0; i < n; i++) {
-			distance[i] = INFINI;
-		}
-		distance[source] = 0;
-		//System.out.println("Initialisation distances : " + Arrays.toString(distance));
-
-		// Determination des distances minimales
-		for (int i = 1; i < n; i++) {
-			for (Sommet s : g.data) {
-				for (Arc a : s.voisins) {
-					int u = a.sommetSource.valeur;
-					int v = a.sommetDestination.valeur;
-					int p = a.poids;
-					distance[v] = Math.min(distance[v], p + distance[u]);
-				}
-			}
-		}
-		
-
-		// Test presence circuit absorbant
-		for (Sommet s : g.data) {
-			for (Arc a : s.voisins) {
-				int u = a.sommetSource.valeur;
-				int v = a.sommetDestination.valeur;
-				int p = a.poids;
-
-				if (distance[u] + p < distance[v]) {
-					System.err.println("PRESENCE D'UN CIRCUIT ABSORBANT");
-					throw new RuntimeException("Presence d'un circuit absorbant");
-				}
-			}			
-		}
-
-		return distance;
-	}
-
-
 	public int[] dijkstra(Sommet s){
 		int n = this.data.size();
 		int d[] = new int[n];
-		ArrayList<Sommet> m = new ArrayList();
+		ArrayList<Sommet> m = new ArrayList<Sommet>();
 
 		for(int i = 1 ; i < this.nbSommets ; i++) d[i] = INFINI;
 
@@ -159,9 +117,9 @@ class Graphe{
 			//Sommet appartenant pas a m ayant d(x) minimale
 			Sommet sMin = null;
 			for (Sommet so : this.data) {
-				if(!m.contains(s)){
-					if(sMin == null)sMin = s;
-					else if(d[sMin.valeur] > d[s.valeur])sMin = s;
+				if(!m.contains(so)){
+					if(sMin == null)sMin = so;
+					else if(d[sMin.valeur] > d[s.valeur])sMin = so;
 				}
 			}
 
@@ -180,7 +138,7 @@ class Graphe{
 		return d;	
 	}
 
-	public int[] dijkstra(Sommet s,int[][] couts){
+	public int[] dijkstra(Sommet s, int[][] couts){
 		int n = this.data.size();
 		int d[] = new int[n];
 		ArrayList<Sommet> m = new ArrayList<Sommet>();
@@ -246,7 +204,7 @@ class Graphe{
 
 		Graphe g2 = new Graphe(data2.size(),this.nbArcs+this.nbSommets,data2,this.poidsMin,this.poidsMax);
 
-		int[] h = bellmanFord(g2,q.valeur-1);
+		int[] h = g2.bellmanFord(q.valeur-1);
 
 		int[][] c2 = new int[this.nbSommets+1][this.nbSommets+1];
 

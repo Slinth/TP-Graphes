@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 class Sommet{
 	public int valeur;
-	public ArrayList<Arc> voisins = new ArrayList();
+	public ArrayList<Arc> voisins = new ArrayList<Arc>();
 
 	public Sommet(int _valeur){
 		this.valeur = _valeur;
