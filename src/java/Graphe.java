@@ -80,18 +80,25 @@ class Graphe{
 	 * Initialisation d'un graphe aléatoirement
 	 */
 	public void init() {
+
+		//Ajout de nbSommets au graphe
 		for(int i = 0 ; i < nbSommets ; i++){
 			data.add(new Sommet(i));
 		}
 
 		int cptArcs = 0;
 
+		//Création des arcs en fonction du nombre max
 		while(cptArcs < this.nbArcs){
+			//Récupération d'un sommet source aléatoirement
 			int indSommetSource = (int)(Math.random() * this.nbSommets );
+			//Récupération d'un sommet destination aléatoirement
 			int indSommetDestination = (int)(Math.random() * this.nbSommets );
+			//Génération du poids de l'arc aléatoirement entre deux bornes
 			int poids = poidsMin + (int)(Math.random() * ((poidsMax - poidsMin) + 1));;
+			
+			//Création de l'arc
 			if(indSommetDestination != indSommetSource){
-				
 				Sommet sSource = data.get(indSommetSource);
 				Sommet sDesti = data.get(indSommetDestination);
 				sSource.addVoisin(sDesti,poids);
@@ -170,13 +177,15 @@ class Graphe{
 		int d[] = new int[n];
 		ArrayList<Sommet> m = new ArrayList<Sommet>();
 
+
+		//Initialisation du tableau à +infini
 		for(int i = 1 ; i < this.nbSommets ; i++) d[i] = INFINI;
 
 		d[s.valeur] = 0;
 		m.add(s);
 
 		while(m.size() != this.nbSommets){
-			//Sommet appartenant pas a m ayant d(x) minimale
+			//Récupération du sommet appratenant à m ayant un d[x] minimal 
 			Sommet sMin = null;
 			for (Sommet so : this.data) {
 				if(!m.contains(so)){
@@ -256,14 +265,16 @@ class Graphe{
 		return c;
 	}
 
-	
+
 	/**
 	 * Algorithme de Johnson
 	 * @return Matrice ou M[i][j] =  coût du plus court chemin de i à j
 	 */
 	public int[][] johnson(){
+		//Récupération de la matrice des couts du graphe
 		int[][] c = this.getTabCouts();
 
+		//Initialisation du tableau des distantces
 		int[][] distance = new int[this.nbSommets+1][this.nbSommets+1];
 
 		Sommet q = new Sommet(this.nbSommets);
