@@ -183,7 +183,7 @@ class Graphe{
 	public int[] dijkstra(Sommet s,int[][] couts){
 		int n = this.data.size();
 		int d[] = new int[n];
-		ArrayList<Sommet> m = new ArrayList();
+		ArrayList<Sommet> m = new ArrayList<Sommet>();
 
 		for(int i = 1 ; i < this.nbSommets ; i++) d[i] = INFINI;
 
@@ -194,9 +194,9 @@ class Graphe{
 			//Sommet appartenant pas a m ayant d(x) minimale
 			Sommet sMin = null;
 			for (Sommet so : this.data) {
-				if(!m.contains(s)){
-					if(sMin == null)sMin = s;
-					else if(d[sMin.valeur] > d[s.valeur])sMin = s;
+				if(!m.contains(so)) {
+					if(sMin == null)sMin = so;
+					else if(d[sMin.valeur] > d[s.valeur])sMin = so;
 				}
 			}
 
