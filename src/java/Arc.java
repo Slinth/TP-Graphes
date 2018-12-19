@@ -12,4 +12,11 @@ class Arc{
 	public String toString() {
 		return "[ " + sommetSource + ", " + sommetDestination + " | " + poids + " ]";
 	}
+
+	public boolean equals(Object o){
+		if(o == this) return true;
+		if(!(o instanceof Arc)) return false;
+		if(((this.sommetSource == ((Arc) o).sommetSource))&&((this.sommetDestination == ((Arc) o).sommetDestination))) return true;
+		return false;
+	}
 }

@@ -31,7 +31,7 @@ class Graphe{
 	/**
 	 * Constante correspondant à infini
 	 */
-	public static int INFINI = 99999;
+	public static int INFINI = Integer.MAX_VALUE;
 
 
 	/**
@@ -101,9 +101,10 @@ class Graphe{
 			if(indSommetDestination != indSommetSource){
 				Sommet sSource = data.get(indSommetSource);
 				Sommet sDesti = data.get(indSommetDestination);
-				sSource.addVoisin(sDesti,poids);
-				System.out.println("Arc entre " + indSommetSource + " et " + indSommetDestination + " de poids " + poids );
-				cptArcs ++ ;
+				if(sSource.addVoisin(sDesti,poids)){
+					System.out.println("Arc entre " + indSommetSource + " et " + indSommetDestination + " de poids " + poids );
+					cptArcs ++ ;
+				}
 			}
 		}
 	}
@@ -249,6 +250,48 @@ class Graphe{
 
 		return d;	
 	}
+
+	public int[] dijkstra_filePrio(Sommet s){
+		TasBinaire file = new TasBinaire(this.nbSommets);
+		int d[] = new int[this.nbSommets+1];
+
+		boolean tab[] = new boolean[this.nbSommets+1];
+
+		for(int i = 1 ; i < this.nbSommets ; i++){
+			d[i] = INFINI;
+			tab[i] = false;
+		}
+
+		d[s.valeur]	= 0 ;
+
+		for ( Sommet som : this.data ) {
+			file.insererSommet(som);
+		}
+
+		while(!file.isEmpty()){
+			//Retire le minimul
+			Sommet sEx = file.remove();
+			tab[sEx.valeur] = true;
+
+			for (Arc a : sEx.voisins) {
+				if(tab[a.sommetDestination.valeur]==false){
+					int b = d[sEx.valeur] + a.poids;
+					int c = d[a.sommetDestination.valeur];
+					if(c>b){
+						int indDestination = file.getIndex(a.sommetDestination);;
+						if(indDestination!=-1){
+							Sommet sB = file.data[indDestination];
+							d[sB.valeur] = b;
+							file.bubbleUp();
+						}
+					}
+				}
+			}		
+		}
+
+		return d;
+	}		
+
 	/**
 	 * Retourne la matrice des coûts d'un graphe
 	 * @return Matrice a deux dimensions correspondant a la matrices des coûts du graphe

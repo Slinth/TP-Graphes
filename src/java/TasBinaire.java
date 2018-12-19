@@ -5,13 +5,13 @@ class TasBinaire {
     public int taille;
 
     public TasBinaire(int _taille) {
-        this.taille = _taille;
+        this.taille = 0;
         this.data = new Sommet[_taille];
     }
 
     public TasBinaire(Sommet _data[], int _taille) {
         this.data = _data;
-        this.taille = _taille;
+        this.taille = 0;
     }
 
     public int getParentIndex(int i) {
@@ -108,8 +108,7 @@ class TasBinaire {
      * a la bonne place pour maintenir la file de priorité
      */
     public void bubbleUp() {
-        int index = this.taille;
-        
+        int index = this.taille;        
         while (aParent(index)
                 && (!(getParent(index).equals(data[index])))) {
             // Parent/Enfant pas a la bonne place -> Echange
@@ -156,14 +155,15 @@ class TasBinaire {
     }
 
     public int getIndex(Sommet s) {
-        int i = 0;
-        int res = 0;
+        int i = 1;
+        int res = -1;
         boolean trouve = false;
-        while (i < this.taille && !trouve) {
+        while (i <= this.taille && !trouve) {
             if (this.data[i].equals(s)) {
                 res = i;
                 trouve = true;
             }
+            i ++;
         }
         return res;
     }
