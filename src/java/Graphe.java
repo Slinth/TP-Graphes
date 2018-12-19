@@ -31,7 +31,7 @@ class Graphe{
 	/**
 	 * Constante correspondant à infini
 	 */
-	public static int INFINI = Integer.MAX_VALUE;
+	public static int INFINI = 99999;
 
 
 	/**
