@@ -14,7 +14,6 @@ class Sommet{
 			this.voisins.add(a);
 			return true;
 		}
-
 		return false;
 	}
 

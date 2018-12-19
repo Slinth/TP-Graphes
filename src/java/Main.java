@@ -29,20 +29,29 @@ public class Main{
 
 		// Graphe g = new Graphe(5, 9, list,0,1000);
 
-		Graphe g = new Graphe(5, 9,1,1000);
+		Graphe g = new Graphe(5, 10,1,1000);
 		g.init();
+
 		g.afficherGraphe();
+
 		Sommet s0 = g.data.get(0);
+		System.out.println("SOMMET DEPART "+ s0);
+
+		System.out.println();
 
 		int[] res = g.bellmanFord(0);
 		System.out.println("BELLMANFORD : ");
 		afficherDistance(res);
+
+		System.out.println();
 
 		System.out.println("DJIKSTRA : ");
 		afficherDistance(g.dijkstra(s0));
 
 		// System.out.println("DJIKSTRA TAS BINAIRE : " + Arrays.toString(g.dijkstra_filePrio(s0)));
 		
+		System.out.println();
+
 		System.out.println("JOHNSON : ");
 		int[][] distance = g.johnson();
 		for(int i = 0 ; i < g.nbSommets ; i++){
@@ -57,7 +66,6 @@ public class Main{
 
 	public static void afficherDistance(int tab[]){
 		int INFINI = Integer.MAX_VALUE;
-		System.out.println("MAX VALUE " + INFINI);
 		for(int i = 0 ; i < tab.length ; i++){
 			if(tab[i]==INFINI) System.out.print(" INF");
 			else System.out.print(" " + tab[i]);
