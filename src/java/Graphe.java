@@ -145,9 +145,9 @@ class Graphe{
 					int u = a.sommetSource.valeur;
 					int v = a.sommetDestination.valeur;
 					int p = a.poids;
-					if((distance[v]==distance[u])&&(distance[v]==INFINI)){
+					if((distance[v] == distance[u]) && (distance[v] == INFINI)) {
 						distance[v] = INFINI;
-					}else{
+					} else {
 						distance[v] = Math.min(distance[v], p + distance[u]);
 					}
 				}
