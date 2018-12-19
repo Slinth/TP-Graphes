@@ -1,27 +1,36 @@
 import java.util.ArrayList;
-import java.util.Arrays;
-
 
 class Graphe{
-	public ArrayList<Sommet> data = new ArrayList();
+	public ArrayList<Sommet> data = new ArrayList<Sommet>();
 	public int nbSommets;
 	public int nbArcs;
 	public int poidsMax;
 	public int poidsMin;
 	public static int INFINI = 99999;
 
-	public Graphe(int _nbSommets, int _nbArcs,int poidsMin,int poidsMax){
+	public Graphe(int _nbSommets, int _nbArcs) {
 		this.nbSommets = _nbSommets;
 		this.nbArcs = _nbArcs;
+		this.poidsMin = 0;
+		this.poidsMax = 100;
 	}
 
-	public Graphe(int _nbSommets, int _nbArcs, ArrayList<Sommet> sommets,int poidsMin,int poidsMax) {
+	public Graphe(int _nbSommets, int _nbArcs, int _poidsMin, int _poidsMax){
+		this.nbSommets = _nbSommets;
+		this.nbArcs = _nbArcs;
+		this.poidsMin = _poidsMin;
+		this.poidsMax = _poidsMax;
+	}
+
+	public Graphe(int _nbSommets, int _nbArcs, ArrayList<Sommet> sommets, int _poidsMin, int _poidsMax) {
 		this.nbSommets = _nbSommets;
 		this.nbArcs = _nbArcs;
 		this.data = sommets;
+		this.poidsMin = _poidsMin;
+		this.poidsMax = _poidsMax;
 	}
 
-	public void init(){
+	public void init() {
 		for(int i = 0 ; i < nbSommets ; i++){
 			data.add(new Sommet(i));
 		}
@@ -36,7 +45,6 @@ class Graphe{
 				
 				Sommet sSource = data.get(indSommetSource);
 				Sommet sDesti = data.get(indSommetDestination);
-				Arc a = new Arc (sSource,sDesti,poids);
 				sSource.addVoisin(sDesti,poids);
 				System.out.println("Arc entre " + indSommetSource + " et " + indSommetDestination + " de poids " + poids );
 				cptArcs ++ ;
