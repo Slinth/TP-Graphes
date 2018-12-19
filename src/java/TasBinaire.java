@@ -155,5 +155,18 @@ class TasBinaire {
         data[index2] = tmp;        
     }
 
+    public int getIndex(Sommet s) {
+        int i = 0;
+        int res = 0;
+        boolean trouve = false;
+        while (i < this.taille && !trouve) {
+            if (this.data[i].equals(s)) {
+                res = i;
+                trouve = true;
+            }
+        }
+        return res;
+    }
+
 
 }
