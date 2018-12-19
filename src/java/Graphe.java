@@ -1,13 +1,44 @@
 import java.util.ArrayList;
-
+/**
+ * Classe Graphe permettant de créer des graphes
+ */
 class Graphe{
+	/**
+	 * Liste contenant les sommets du graphe
+	 */
 	public ArrayList<Sommet> data = new ArrayList<Sommet>();
+	
+	/**
+	 * Nombre de sommets dans le graphe
+	 */
 	public int nbSommets;
+
+	/**
+	 * Nombre d'arcs dans le graphe
+	 */
 	public int nbArcs;
+
+	/**
+	 * Valeur du poids Maximal d'un arc
+	 */
 	public int poidsMax;
+
+	/**
+	 * Valeur du poids Minial d'un arc
+	 */
 	public int poidsMin;
+
+	/**
+	 * Constante correspondant à infini
+	 */
 	public static int INFINI = 99999;
 
+
+	/**
+	 * Constructeur principal d'un graphe. Construit un graphe aléatoire à _nbSommets et _nbArcs
+	 * @param  _nbSommets Nombre de sommets
+	 * @param  _nbArcs    Nombre d'arcs
+	 */
 	public Graphe(int _nbSommets, int _nbArcs) {
 		this.nbSommets = _nbSommets;
 		this.nbArcs = _nbArcs;
@@ -15,6 +46,13 @@ class Graphe{
 		this.poidsMax = 100;
 	}
 
+	/**
+	 * Constructeur personnalisé d'un graphe. Construit un graphe aléatoire à _nbSommets et _nbArcs en prennant en compte des préférences de poids pour les arcs
+	 * @param  _nbSommets Nombre de sommets
+	 * @param  _nbArcs    Nombre d'arcs
+	 * @param _poidsMin	  Poids minimal pour les arcs
+	 * @param _poidsMax	  Poids Maxiaml pour les arcs
+	 */
 	public Graphe(int _nbSommets, int _nbArcs, int _poidsMin, int _poidsMax){
 		this.nbSommets = _nbSommets;
 		this.nbArcs = _nbArcs;
@@ -22,6 +60,14 @@ class Graphe{
 		this.poidsMax = _poidsMax;
 	}
 
+	/**
+	 * Constructeur personnalisé d'un graphe. Construit un graphe aléatoire à _nbSommets et _nbArcs en prennant en compte des préférences de poids pour les arcs
+	 * @param  _nbSommets Nombre de sommets
+	 * @param  _nbArcs    Nombre d'arcs
+	 * @param sommets 	  Liste des sommets de du graphe
+	 * @param _poidsMin	  Poids minimal pour les arcs
+	 * @param _poidsMax	  Poids Maxiaml pour les arcs
+	 */
 	public Graphe(int _nbSommets, int _nbArcs, ArrayList<Sommet> sommets, int _poidsMin, int _poidsMax) {
 		this.nbSommets = _nbSommets;
 		this.nbArcs = _nbArcs;
@@ -30,19 +76,29 @@ class Graphe{
 		this.poidsMax = _poidsMax;
 	}
 
+	/**
+	 * Initialisation d'un graphe aléatoirement
+	 */
 	public void init() {
+
+		//Ajout de nbSommets au graphe
 		for(int i = 0 ; i < nbSommets ; i++){
 			data.add(new Sommet(i));
 		}
 
 		int cptArcs = 0;
 
+		//Création des arcs en fonction du nombre max
 		while(cptArcs < this.nbArcs){
+			//Récupération d'un sommet source aléatoirement
 			int indSommetSource = (int)(Math.random() * this.nbSommets );
+			//Récupération d'un sommet destination aléatoirement
 			int indSommetDestination = (int)(Math.random() * this.nbSommets );
+			//Génération du poids de l'arc aléatoirement entre deux bornes
 			int poids = poidsMin + (int)(Math.random() * ((poidsMax - poidsMin) + 1));;
+			
+			//Création de l'arc
 			if(indSommetDestination != indSommetSource){
-				
 				Sommet sSource = data.get(indSommetSource);
 				Sommet sDesti = data.get(indSommetDestination);
 				sSource.addVoisin(sDesti,poids);
@@ -52,6 +108,9 @@ class Graphe{
 		}
 	}
 
+	/**
+	 * Affiche le graphe
+	 */
 	public void afficherGraphe() {
 		for (Sommet s : this.data) {
 			System.out.print(s.valeur + " | ");
@@ -62,6 +121,11 @@ class Graphe{
 		}
 	}
 
+	/**
+	 * Applique l'algorithme de Bellman Ford sur le graphe
+	 * @param  source Sommet source
+	 * @return        Tableau contenant les valeurs des pcc du sommet source vers tout sommet du graphe
+	 */
 	public int[] bellmanFord(int source) {
 		int n = this.nbSommets;
 		int distance[] = new int[n];
@@ -103,18 +167,25 @@ class Graphe{
 		return distance;
 	}
 
+	/**
+	 * Applique l'algorithme de Dijkstra sur le graphe
+	 * @param  source Sommet source
+	 * @return        Tableau contenant les valeurs des pcc du sommet source vers tout sommet du graphe
+	 */
 	public int[] dijkstra(Sommet s){
 		int n = this.data.size();
 		int d[] = new int[n];
 		ArrayList<Sommet> m = new ArrayList<Sommet>();
 
+
+		//Initialisation du tableau à +infini
 		for(int i = 1 ; i < this.nbSommets ; i++) d[i] = INFINI;
 
 		d[s.valeur] = 0;
 		m.add(s);
 
 		while(m.size() != this.nbSommets){
-			//Sommet appartenant pas a m ayant d(x) minimale
+			//Récupération du sommet appratenant à m ayant un d[x] minimal 
 			Sommet sMin = null;
 			for (Sommet so : this.data) {
 				if(!m.contains(so)){
@@ -138,6 +209,12 @@ class Graphe{
 		return d;	
 	}
 
+	/**
+	 * Applique l'algorithme de Dijkstra sur le graphe avec tableau des coûts
+	 * @param  source Sommet source
+	 * @param  couts  Matrice des coûts
+	 * @return        Tableau contenant les valeurs des pcc du sommet source vers tout sommet du graphe
+	 */
 	public int[] dijkstra(Sommet s, int[][] couts){
 		int n = this.data.size();
 		int d[] = new int[n];
@@ -172,7 +249,10 @@ class Graphe{
 
 		return d;	
 	}
-
+	/**
+	 * Retourne la matrice des coûts d'un graphe
+	 * @return Matrice a deux dimensions correspondant a la matrices des coûts du graphe
+	 */
 	public int[][] getTabCouts(){
 		int[][] c = new int[this.nbSommets][this.nbSommets];
 
@@ -184,13 +264,17 @@ class Graphe{
 
 		return c;
 	}
+
+
 	/**
 	 * Algorithme de Johnson
 	 * @return Matrice ou M[i][j] =  coût du plus court chemin de i à j
 	 */
 	public int[][] johnson(){
+		//Récupération de la matrice des couts du graphe
 		int[][] c = this.getTabCouts();
 
+		//Initialisation du tableau des distantces
 		int[][] distance = new int[this.nbSommets+1][this.nbSommets+1];
 
 		Sommet q = new Sommet(this.nbSommets);
