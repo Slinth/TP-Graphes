@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.*;
 /**
  * Classe Graphe permettant de créer des graphes
  */
@@ -302,7 +303,6 @@ class Graphe{
 	 */
 	public int[][] getTabCouts(){
 		int[][] c = new int[this.nbSommets][this.nbSommets];
-
 		for ( Sommet s : data ) {
 			for ( Arc a : s.voisins ) {
 				c[a.sommetSource.valeur][a.sommetDestination.valeur] = a.poids;
@@ -318,40 +318,44 @@ class Graphe{
 	 * @return Matrice ou M[i][j] =  coût du plus court chemin de i à j
 	 */
 	public int[][] johnson(){
-		//Récupération de la matrice des couts du graphe
-		int[][] c = this.getTabCouts();
+		int distance[][] = new int[this.nbSommets][this.nbSommets];
 
-		//Initialisation du tableau des distantces
-		int[][] distance = new int[this.nbSommets+1][this.nbSommets+1];
+		//Création du graphe G1 = G où on a ajouté un sommet s et des arcs entre s et tout sommet de G
+		ArrayList<Sommet> dataG1 = new ArrayList<Sommet>();
+		dataG1.addAll(this.data);
 
-		Sommet q = new Sommet(this.nbSommets);
-
-		for ( Sommet s :this.data ) {
-			q.addVoisin(s,0);
+		Sommet s = new Sommet(this.nbSommets);
+		for ( Sommet tmp : dataG1) {
+			s.addVoisin(tmp,0);
 		}
 
-		ArrayList<Sommet> data2 = this.data;
-		data2.add(q);
+		dataG1.add(s);
 
-		Graphe g2 = new Graphe(data2.size(),this.nbArcs+this.nbSommets,data2,this.poidsMin,this.poidsMax);
+		Graphe G1 = new Graphe(this.nbSommets+1, this.nbArcs+this.nbSommets,dataG1, this.poidsMin, this.poidsMax);
+		int h[] = G1.bellmanFord(s.valeur);
 
-		int[] h = g2.bellmanFord(q.valeur-1);
-
-		int[][] c2 = new int[this.nbSommets+1][this.nbSommets+1];
-
-		for (int i = 0 ; i < this.nbSommets ; i++ ) {
-			for(int j = 0 ; j <this.nbSommets ; j++ ){
-				c2[i][j] = c[i][j] - h[i] + h[j];
-			}
-		}
+		int c[][] = this.getTabCouts();
+		int c2[][] = new int[this.nbSommets][this.nbSommets];
 
 		for (Sommet som : this.data ) {
-			int[] d = this.dijkstra(som,c2);
-			for ( Sommet sommet : this.data) {
-				distance[som.valeur][sommet.valeur] = d[sommet.valeur] + h[sommet.valeur] - h[som.valeur];
+			for (Arc a : som.voisins ) {
+				int x = a.sommetSource.valeur;
+				int y = a.sommetDestination.valeur;
+				c2[x][y] = c[x][y] - h[x] + h[y];
 			}
 		}
 
+		for (Sommet x : this.data ) {
+			int d[] = this.dijkstra(x,c2);
+			
+			for (Sommet y : this.data ) {
+				distance[x.valeur][y.valeur] = d[y.valeur] + h[y.valeur] - h [x.valeur];
+			}
+		}
 		return distance;
+		
 	}
+
+
+
 }

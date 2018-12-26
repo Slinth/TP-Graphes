@@ -4,37 +4,35 @@ import java.util.Arrays;
 public class Main{
 
 	public static void main(String[] args) {
-		// Sommet s0 = new Sommet(0);
-		// Sommet s1 = new Sommet(1);
-		// Sommet s2 = new Sommet(2);
-		// Sommet s3 = new Sommet(3);
-		// Sommet s4 = new Sommet(4);
+		Sommet s0 = new Sommet(0);
+		Sommet s1 = new Sommet(1);
+		Sommet s2 = new Sommet(2);
+		Sommet s3 = new Sommet(3);
+		Sommet s4 = new Sommet(4);
 
-		// s0.addVoisin(s1, 6);
-		// s0.addVoisin(s2, 7);
-		// s1.addVoisin(s2, 8);
-		// s1.addVoisin(s4, -4);
-		// s1.addVoisin(s3, 5);
-		// s3.addVoisin(s2, -2);
-		// s2.addVoisin(s4, 9);
-		// s4.addVoisin(s0, 2);
-		// s4.addVoisin(s3, 7);
+		s0.addVoisin(s3, 960);
+		s0.addVoisin(s2, 51);
+		s1.addVoisin(s4,302);
+		s2.addVoisin(s1,-302);
+		s2.addVoisin(s3,454);
+		s3.addVoisin(s4,-246);
+		s4.addVoisin(s1,-281);
 
-		// ArrayList<Sommet> list = new ArrayList<Sommet>();
-		// list.add(s0);
-		// list.add(s1);
-		// list.add(s2);
-		// list.add(s3);
-		// list.add(s4);
+		
+		ArrayList<Sommet> list = new ArrayList<Sommet>();
+		list.add(s0);
+		list.add(s1);
+		list.add(s2);
+		list.add(s3);
+		list.add(s4);
 
-		// Graphe g = new Graphe(5, 9, list,0,1000);
+		Graphe g = new Graphe(5, 9, list,-500,1000);
 
-		Graphe g = new Graphe(5, 10,1,1000);
-		g.init();
+		// Graphe g = new Graphe(5, 7,-500,1000);
+		// g.init();
 
 		g.afficherGraphe();
 
-		Sommet s0 = g.data.get(0);
 		System.out.println("SOMMET DEPART "+ s0);
 
 		System.out.println();
@@ -53,12 +51,11 @@ public class Main{
 		System.out.println();
 
 		System.out.println("JOHNSON : ");
-		int[][] distance = g.johnson();
-		for(int i = 0 ; i < g.nbSommets ; i++){
-			for(int j = 0 ; j < g.nbSommets ; j++){
-				System.out.print(distance[i][j] + " | ");
-			}
-			System.out.println();
+
+		int distJohnson[][] = g.johnson();
+
+		for ( int[] array : distJohnson ) {
+			afficherDistance(array);
 		}
 
 
@@ -72,4 +69,17 @@ public class Main{
 		}
 		System.out.println();
 	}
+
+	public static void afficherDistance(int tab[][]){
+		int INFINI = Integer.MAX_VALUE;
+		for(int i = 0 ; i < tab.length ; i++){
+			for(int j = 0 ; j < tab.length ; j++ ){
+				if(tab[i][j]==INFINI) System.out.print(" INF");
+				else System.out.print(" " + tab[i][j]);
+			}
+					System.out.println();
+
+		}
+	}
+
 }
