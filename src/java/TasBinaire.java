@@ -116,6 +116,10 @@ class TasBinaire {
             index = getParentIndex(index);
         }        
     }
+
+    public void bubbleUp(int index){
+            swap(index, getParentIndex(index));
+    }
     
     /**
      * Renvoie TRUE si l'element a l'indice i a un parent dans le tas, FALSE sinon
@@ -149,9 +153,11 @@ class TasBinaire {
      * Echange l'element d'indice index1 et l'element d'indice index2 dans le tas
      */
     public void swap(int index1, int index2) {
-        Sommet tmp = data[index1];
-        data[index1] = data[index2];
-        data[index2] = tmp;        
+        if((index1>=0)&&(index2>=0)){
+            Sommet tmp = data[index1];
+            data[index1] = data[index2];
+            data[index2] = tmp;      
+        }  
     }
 
     public int getIndex(Sommet s) {

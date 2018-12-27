@@ -103,7 +103,7 @@ class Graphe{
 				Sommet sSource = data.get(indSommetSource);
 				Sommet sDesti = data.get(indSommetDestination);
 				if(sSource.addVoisin(sDesti,poids)){
-					System.out.println("Arc entre " + indSommetSource + " et " + indSommetDestination + " de poids " + poids );
+					//System.out.println("Arc entre " + indSommetSource + " et " + indSommetDestination + " de poids " + poids );
 					cptArcs ++ ;
 				}
 			}
@@ -256,45 +256,59 @@ class Graphe{
 		return d;	
 	}
 
+	/**
+	 * Algorithme de Dijkstra utilisant une file de priorité en tas binaire
+	 * @param  s Sommet de départ
+	 * @return   Pour chaque sommets x , la plus courte distance de s à x sous forme de tableau
+	 */
 	public int[] dijkstra_filePrio(Sommet s){
+		//Déclaration d'une file de priorité de taille maximale "nbSommets"
 		TasBinaire file = new TasBinaire(this.nbSommets);
-		int d[] = new int[this.nbSommets+1];
+		//Déclaration d'une matrice des distances de taille "nbSommets"
+		int[] distances = new int[this.nbSommets];
+		//Insertion du sommet source dans la file
+		file.insererSommet(s);
+		//Déclaration de la liste des sommets visités
+		ArrayList<Sommet> visite = new ArrayList<Sommet>();
 
-		boolean tab[] = new boolean[this.nbSommets+1];
+		//Initialisation des distances à +infini
+		for(int i = 0 ; i < this.nbSommets ; i++) distances[i] = INFINI;
 
-		for(int i = 1 ; i < this.nbSommets ; i++){
-			d[i] = INFINI;
-			tab[i] = false;
-		}
+		distances[s.valeur] = 0;
 
-		d[s.valeur]	= 0 ;
+		//Récupération du noeud en tête de file
+		Sommet n = file.remove();
 
-		for ( Sommet som : this.data ) {
-			file.insererSommet(som);
-		}
+		while(n != null){
+			//Marque n comme visité
+			visite.add(n);
+			System.out.println(n.valeur + " marqué comme visité");
+			//Récupération des voisins de n
+			ArrayList<Arc> voisins = n.voisins;
 
-		while(!file.isEmpty()){
-			//Retire le minimul
-			Sommet sEx = file.remove();
-			tab[sEx.valeur] = true;
+			for (Arc a : voisins) {
 
-			for (Arc a : sEx.voisins) {
-				if(tab[a.sommetDestination.valeur]==false){
-					int b = d[sEx.valeur] + a.poids;
-					int c = d[a.sommetDestination.valeur];
-					if(c>b){
-						int indDestination = file.getIndex(a.sommetDestination);;
-						if(indDestination!=-1){
-							Sommet sB = file.data[indDestination];
-							d[sB.valeur] = b;
-							file.bubbleUp();
-						}
-					}
+				Sommet tmp = a.sommetDestination;
+				int poids = a .poids;
+
+				//Si le sommet n'a pas déjà été visité
+				if(!visite.contains(tmp)){
+					//On insert le sommet dans la file sans le marqué comme visité, son état est "dans la queue"
+					System.out.println("SOMMET " + tmp.valeur + " entre en file");
+					file.insererSommet(tmp);
 				}
-			}		
-		}
 
-		return d;
+
+				if(distances[tmp.valeur] < distances[n.valeur] + poids){
+					distances[tmp.valeur] = distances[n.valeur] + poids;
+					System.out.println(tmp);
+					file.bubbleUp(file.getIndex(tmp));
+				}
+			}
+
+			n = file.remove();
+		}
+		return distances;
 	}		
 
 	/**
