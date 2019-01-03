@@ -1,3 +1,4 @@
 
 *.class
 /src/java/class
+*.zip
